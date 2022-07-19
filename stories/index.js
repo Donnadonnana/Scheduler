@@ -180,7 +180,18 @@ storiesOf('Show', module)
   .addParameters({
     backgrounds: [{ name: "white", value: "#fff", default: true }]
   })
-  .add('Show', () => <Show onEdit={action('onEdit')} onDelete={action('onDelete')} />);
+  .add('Show', () => <Show {...{
+    id: 4,
+    time: "3pm",
+    interview: {
+      student: "Archie Andrews",
+      interviewer:{
+        id: 4,
+        name: "Cohana Roy",
+        avatar: "https://i.imgur.com/FK8V841.jpg",
+      }
+    }
+  }} onEdit={action('onEdit')} onDelete={action('onDelete')} />);
   
 storiesOf('Confirm', module)
  .addParameters ({
