@@ -1,6 +1,3 @@
-
-
-
 export function getAppointmentsForDay(state, day) {
 
   const appointments = state.days.filter(
