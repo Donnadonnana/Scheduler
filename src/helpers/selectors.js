@@ -30,3 +30,19 @@ export default function getInterview(state, interview) {
     student: interview.student,
   }
 }
+
+export function getInterviewersForDay(state, day) {
+  const interviewrs = state.days.filter(
+    interviewer => interviewer.name === day
+  )[0]?.interviewers || [];
+  let res = [];
+  Object.keys(state.interviewers).forEach((interviewerKey) => {
+    const interviewerVal = state.interviewers[interviewerKey];
+    if (interviewrs.includes(interviewerVal.id)) {
+      res.push(interviewerVal);
+    }
+  })
+  return res;
+  
+  
+}

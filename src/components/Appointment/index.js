@@ -29,7 +29,7 @@ const { mode, transition, back } = useVisualMode(
       )} 
       {mode === CREATE && 
         <Form
-        interviewers={[]}
+        interviewers={props.interviewers}
         onCancel={() =>back()}
         onSave={()=>console.log('onSave')}
       />
