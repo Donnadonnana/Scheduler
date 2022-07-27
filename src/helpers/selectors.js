@@ -20,11 +20,12 @@ export function getAppointmentsForDay(state, day) {
 export default function getInterview(state, interview) {
 
   if (interview === null) return null;
+
   const interviewerID = interview.interviewer;
+  if (!interviewerID) return null;
 
   const allInterviewers = state.interviewers;
   const interviewerData = allInterviewers[interviewerID.toString()];
-
   return {
     interviewer: interviewerData,
     student: interview.student,

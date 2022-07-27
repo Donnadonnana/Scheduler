@@ -41,7 +41,6 @@ export default function Application(props) {
     // })
   }, [])
   const bookInterview = async (id, interview) => {
-
     const appointment = {
      ...state.appointments[id],
     interview: { ...interview }
@@ -50,7 +49,6 @@ export default function Application(props) {
     ...state.appointments,
     [id]: appointment
     };
-     
     try {
       await axios.put(`http://localhost:8001/api/appointments/${id}`, {
       interview,
@@ -63,10 +61,27 @@ export default function Application(props) {
     } catch (e) {
       alert(e);
     }
-    
+  }
+  const cancelInterview = async (id, interview) => {
+       const appointment = {
+     ...state.appointments[id],
+    interview:null
+    };
+    const appointments = {
+    ...state.appointments,
+    [id]: appointment
+    };
+    try {
+      await axios.delete(`http://localhost:8001/api/appointments/${id}`, 
+      )
 
-    
-
+      setState({
+        ...state,
+        appointments:appointments
+        });
+    } catch (e) {
+      alert(e);
+    }
   }
  
   return (
@@ -105,9 +120,7 @@ export default function Application(props) {
             interview={interview}
             interviewers={interviewerArray}
             bookInterview={(id, interview) => bookInterview(id, interview)}
-            
-          
-            
+            cancelInterview={(id,interview)=>cancelInterview(id,interview)}
         />
         })}
  

@@ -2,15 +2,19 @@ import React from "react";
 import 'components/Appointment/styles.scss';
 import Header from './Header';
 import Show from './Show';
+import {StatusSave,StatusDelete} from './Status';
 import Empty from './Empty';
 import useVisualMode from "../../hooks/useVisualMode";
 import Form from "./Form";
+import Confirm from "./Confirm";
+
 
 const EMPTY = 'EMPTY';
 const SHOW = 'SHOW';
 const CREATE = 'CREATE';
 const SAVING = 'SAVING';
-
+const DELET = 'DELETE';
+const COMFIRM = 'COMFIRM';
 
 export default function Appointment(props) {
 const { mode, transition, back } = useVisualMode(
@@ -27,6 +31,15 @@ const { mode, transition, back } = useVisualMode(
     transition(SHOW)
   }
    
+  const cancel = async (name, interviewer) => {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    transition(DELET);
+    await props.cancelInterview(props.id, interview)
+    transition(EMPTY)
+  }
   return (
     
     <article className="appointment">
@@ -34,10 +47,16 @@ const { mode, transition, back } = useVisualMode(
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
 
-      {mode === SAVING && <div>Saving...</div>}
+      {mode === SAVING && <StatusSave />}
+      {mode === DELET && <StatusDelete />}
+      {mode === COMFIRM && <Confirm
+        onConfirm={() => cancel(props.student, props.interviewer)}
+        onCancel={()=>back()}/>}
+      
       {mode === SHOW && (
        <Show
-       {...props}
+          {...props}
+          onDelete={() => transition(COMFIRM)}
      />
       )} 
       {mode === CREATE && 
