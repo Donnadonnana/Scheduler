@@ -59,7 +59,7 @@ export default function Application(props) {
         appointments:appointments
         });
     } catch (e) {
-      alert(e);
+      throw e;
     }
   }
   const cancelInterview = async (id, interview) => {
@@ -80,7 +80,7 @@ export default function Application(props) {
         appointments:appointments
         });
     } catch (e) {
-      alert(e);
+       throw e;
     }
   }
  

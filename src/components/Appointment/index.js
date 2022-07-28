@@ -7,6 +7,7 @@ import Empty from './Empty';
 import useVisualMode from "../../hooks/useVisualMode";
 import Form from "./Form";
 import Confirm from "./Confirm";
+import {ErrorSave,ErrorDelete} from "./Error";
 
 
 
@@ -17,6 +18,8 @@ const SAVING = 'SAVING';
 const DELET = 'DELETE';
 const COMFIRM = 'COMFIRM';
 const EDIT = 'EDIT';
+const ERROR_SVAE = 'ERROR_SAVE';
+const ERROR_DELETE = 'ERROR_DELETE';
 
 export default function Appointment(props) {
 const { mode, transition, back } = useVisualMode(
@@ -28,19 +31,26 @@ const { mode, transition, back } = useVisualMode(
       student: name,
       interviewer
     };
-    transition(SAVING);
+    try {transition(SAVING);
     await props.bookInterview(props.id, interview)
     transition(SHOW)
-  }
+    } catch (e) {
+      transition(ERROR_SVAE)
+    }
+   }
    
   const cancel = async (name, interviewer) => {
     const interview = {
       student: name,
       interviewer
     };
-    transition(DELET);
+    try{ transition(DELET);
     await props.cancelInterview(props.id, interview)
-    transition(EMPTY)
+      transition(EMPTY)
+    } catch (e) {
+      transition(ERROR_DELETE)
+    }
+   
   }
   return (
     
@@ -48,6 +58,10 @@ const { mode, transition, back } = useVisualMode(
       
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+      {mode === ERROR_SVAE && <ErrorSave
+        onClose={() => back()} />}
+      {mode === ERROR_DELETE && <ErrorDelete
+        onClose={()=>back()} />}
 
       {mode === SAVING && <StatusSave />}
       {mode === DELET && <StatusDelete />}
