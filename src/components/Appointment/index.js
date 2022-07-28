@@ -9,12 +9,14 @@ import Form from "./Form";
 import Confirm from "./Confirm";
 
 
+
 const EMPTY = 'EMPTY';
 const SHOW = 'SHOW';
 const CREATE = 'CREATE';
 const SAVING = 'SAVING';
 const DELET = 'DELETE';
 const COMFIRM = 'COMFIRM';
+const EDIT = 'EDIT';
 
 export default function Appointment(props) {
 const { mode, transition, back } = useVisualMode(
@@ -52,11 +54,11 @@ const { mode, transition, back } = useVisualMode(
       {mode === COMFIRM && <Confirm
         onConfirm={() => cancel(props.student, props.interviewer)}
         onCancel={()=>back()}/>}
-      
       {mode === SHOW && (
        <Show
           {...props}
           onDelete={() => transition(COMFIRM)}
+          onEdit={()=>transition(EDIT)}
      />
       )} 
       {mode === CREATE && 
@@ -65,7 +67,17 @@ const { mode, transition, back } = useVisualMode(
         onCancel={() => back()}
         onSave={(student, interviewer)=>save(student, interviewer)}
       />
-     } 
+      } 
+      {mode === EDIT &&
+        <Form
+        
+        interviewers={props.interviewers}
+        interviewer={props.interview.interviewer.id}
+        student={props.interview.student}
+        onCancel={() => back()}
+        onSave={(student, interviewer)=>save(student, interviewer)}
+      />
+      }
     </article>
     
 
