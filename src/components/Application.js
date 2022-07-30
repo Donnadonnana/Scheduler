@@ -15,9 +15,9 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
 
-  console.log('$$$$$');
-  console.log(state);
- const dailyAppointment = getAppointmentsForDay(state, state.day);
+ 
+  const dailyAppointment = getAppointmentsForDay(state, state.day);
+ 
   return (
     <main className="layout">
       <section className="sidebar">
@@ -43,18 +43,18 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {dailyAppointment.map((appointment) => {
+
           const interview = getInterview(state, appointment.interview);
           const interviewerArray = getInterviewersForDay(state, state.day)
-   
-          
-      
+
           return <Appointment 
             key={appointment.id}
             {...appointment} 
             interview={interview}
             interviewers={interviewerArray}
             bookInterview={(id, interview) => bookInterview(id, interview)}
-            cancelInterview={(id,interview)=>cancelInterview(id,interview)}
+            cancelInterview={(id, interview) => cancelInterview(id, interview)}
+            
         />
         })}
  

@@ -26,10 +26,8 @@ const [state, setState] = useState({
   }
 
   const bookInterview = async (id, interview) => {
-    console.log(interview);
-    if (!interview.interviewer || !interview.student) {
-      throw new Error('Invalid form');
-    }
+
+    
 
     const appointment = {
      ...state.appointments[id],
@@ -61,6 +59,8 @@ const [state, setState] = useState({
         days: updatedDays
     
         });
+
+      return true;
     } catch (e) {
       throw e;
     }

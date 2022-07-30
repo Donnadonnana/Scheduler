@@ -22,6 +22,7 @@ const ERROR_SVAE = 'ERROR_SAVE';
 const ERROR_DELETE = 'ERROR_DELETE';
 
 export default function Appointment(props) {
+ 
 const { mode, transition, back } = useVisualMode(
   props.interview ? SHOW : EMPTY
   );  
@@ -31,9 +32,16 @@ const { mode, transition, back } = useVisualMode(
       student: name,
       interviewer
     };
-    try {transition(SAVING);
-    await props.bookInterview(props.id, interview)
-    transition(SHOW)
+    try {
+      if (!interview.interviewer || !interview.student) {
+        return;
+      } 
+      transition(SAVING);
+
+      await props.bookInterview(props.id, interview)
+
+        transition(SHOW)
+
     } catch (e) {
       transition(ERROR_SVAE)
     }
@@ -61,7 +69,8 @@ const { mode, transition, back } = useVisualMode(
       {mode === ERROR_SVAE && <ErrorSave
         onClose={() => back()} />}
       {mode === ERROR_DELETE && <ErrorDelete
-        onClose={()=>back()} />}
+        onClose={() =>transition(SHOW)
+        } />}
 
       {mode === SAVING && <StatusSave />}
       {mode === DELET && <StatusDelete />}
